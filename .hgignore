@@ -1,0 +1,6 @@
+syntax: glob
+*proj.user
+obj/*
+bin/*
+*.ncb
+*.suo
