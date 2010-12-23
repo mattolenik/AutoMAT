@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoMAT", "AutoMAT\AutoMAT.csproj", "{8A052EDA-731D-412B-AB5A-B8B87B29777A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8A052EDA-731D-412B-AB5A-B8B87B29777A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A052EDA-731D-412B-AB5A-B8B87B29777A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A052EDA-731D-412B-AB5A-B8B87B29777A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A052EDA-731D-412B-AB5A-B8B87B29777A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
