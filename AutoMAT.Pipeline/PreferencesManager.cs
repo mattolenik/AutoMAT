@@ -7,11 +7,15 @@ using Newtonsoft.Json;
 
 namespace AutoMAT.Pipeline
 {
-    static class PreferencesManager
+    public class PreferencesManager
     {
         const string FileName = "preferences.json";
 
         public static Preferences Current { get; set; }
+
+        public PreferencesManager()
+        {
+        }
 
         public static void Load()
         {

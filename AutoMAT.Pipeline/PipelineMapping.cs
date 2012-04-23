@@ -22,6 +22,9 @@ namespace AutoMAT.Pipeline
             }
         }
 
+        public string In { get; set; }
+        public string Out { get; set; }
+
         DirectoryInfo outputDirectory;
         public DirectoryInfo OutputDirectory
         {
