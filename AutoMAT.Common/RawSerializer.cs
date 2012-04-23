@@ -2,9 +2,9 @@
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace AutoMAT
+namespace AutoMAT.Common
 {
-	public static class RawSerializer
+	static class RawSerializer
 	{
 		public static T Deserialize<T>(Stream stream)
 		{

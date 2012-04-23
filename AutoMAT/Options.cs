@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using CommandLine;
 using CommandLine.Text;
+using System.Reflection;
 
 namespace AutoMAT
 {
-    internal sealed class Options
+    sealed class Options
     {
         [ValueList(typeof(List<String>))]
-        public IList<String> InputFiles = new List<String>();
+        public List<String> InputPaths = new List<String>();
 
         [Option("d", "dither",
             Required = false,
@@ -34,14 +34,24 @@ namespace AutoMAT
         [HelpOption(HelpText = "Display this help screen.")]
         public String GetUsage()
         {
-            var help = new HelpText(new HeadingInfo("AutoMAT", "0.2"));
+            var help = new HelpText(new HeadingInfo("AutoMAT", Assembly.GetExecutingAssembly().GetName().Version.ToString()));
             help.Copyright = new CopyrightInfo("Matt Olenik", 2012);
             help.AddPreOptionsLine("This is freeware, you may distribute it as such.");
-            help.AddPreOptionsLine(String.Empty);
+            help.AddPreOptionsLine(string.Empty);
+            help.AddPreOptionsLine("Supports all file formats supported by the DevIL image library. See: http://openil.sourceforge.net/features.php");
+            help.AddPreOptionsLine("Common formats are: bmp, jpg, png, tga, gif, psp, psd");
+            help.AddPreOptionsLine(string.Empty);
             help.AddPreOptionsLine("Options in [brackets] are optional. Specify one or more input images.");
-            help.AddPreOptionsLine("Supported formats formats: bmp, jpg, gif, png, tiff");
-            help.AddPreOptionsLine(String.Empty);
-            help.AddPreOptionsLine("Usage: AutoMAT [-d] [-m 3] [--alwaysMipmap] image1.bmp [image2.bmp image3.bmp...]");
+            help.AddPreOptionsLine(string.Empty);
+            help.AddPreOptionsLine("Usage: AutoMAT [-d] [-m 3] [--alwaysMipmap] image1.bmp [image2.png image3.jpg...]");
+            help.AddPreOptionsLine(string.Empty);
+            help.AddPostOptionsLine("Typical usage is just this: ");
+            help.AddPostOptionsLine("AutoMAT image1.bmp [image2.png image3.jpg...]");
+            help.AddPostOptionsLine(string.Empty);
+            help.AddPostOptionsLine("For animated MATs, pass in folders containing the frames. Frame order will by done by alphanumeric sorting of the file names.");
+            help.AddPostOptionsLine("AutoMAT -a folderForMat1 [folderForMat2 folderForMat3...]");
+            help.AddPostOptionsLine(string.Empty);
+            help.AddPostOptionsLine("With no options specified, AutoMAT will use no dithering and create 3 mipmaps, unless the source image is larger than 256 in width or height, then no mipmaps will be created by default.");
             help.AddOptions(this);
             return help;
         }

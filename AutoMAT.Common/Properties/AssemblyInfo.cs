@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("AutoMAT")]
-[assembly: AssemblyDescription("Command line tool for converting images to Jedi Knight MAT files.")]
+[assembly: AssemblyTitle("AutoMAT.Common")]
+[assembly: AssemblyDescription("Common code for AutoMAT.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("AutoMAT")]
-[assembly: AssemblyCopyright("Copyright © 2012 Matt Olenik")]
+[assembly: AssemblyCopyright("Copyright © Matt Olenik 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("6b44a975-a4eb-474d-af50-7e728f4e793b")]
+[assembly: Guid("89afcdf3-5f44-4d8f-802d-c7682e10b558")]
 
 // Version information for an assembly consists of the following four values:
 //
