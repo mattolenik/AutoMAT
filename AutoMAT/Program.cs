@@ -1,14 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoMAT.Common;
 using CommandLine;
 
 namespace AutoMAT
 {
-    class Program
+    internal class Program
     {
-        static void Main(String[] args)
+        private static void Main(string[] args)
         {
             var options = new Options();
             var parser = new CommandLineParser(new CommandLineParserSettings(Console.Error));
@@ -16,56 +20,61 @@ namespace AutoMAT
             {
                 Environment.Exit(1);
             }
-            if (options.InputFiles.Count == 0)
+            if (options.InputPaths.Count == 0)
             {
-                Console.Error.WriteLine(options.GetUsage());
-                Console.Error.WriteLine();
-                Console.Error.WriteLine("You must specify at least one input file.");
+                Console.WriteLine(options.GetUsage());
+                Console.WriteLine();
+                Console.WriteLine("You must specify at least one input file.");
             }
-            foreach (var file in options.InputFiles)
+
+            Parallel.ForEach(options.InputPaths,
+            (path) =>
             {
                 try
                 {
-                    var inputFile = new FileInfo(file);
-                    using (var bitmap = Bitmap.FromStream(inputFile.OpenRead()) as Bitmap)
+                    if (Directory.Exists(path))
                     {
-                        int numMipmaps;
-                        PixelFormat format;
-                        DitherMethod ditherMethod;
-
-                        if (options.Transparency)
+                        var directory = new DirectoryInfo(path);
+                        FileInfo[] inputFiles = directory.GetFiles().OrderBy(f => f.Name, StringComparer.OrdinalIgnoreCase).ToArray();
+                        var outputFile = new FileInfo(Path.Combine(directory.Parent.FullName, directory.Name + ".mat"));
+                        Converter.Convert(
+                            new ConversionOptions
+                            {
+                                Dither = options.Dither,
+                                ForceMipmaps = options.AlwaysMipmap,
+                                NumMipmaps = options.NumMipmaps,
+                                Transparency = options.Transparency
+                            },
+                            outputFile,
+                            inputFiles);
+                    }
+                    else
+                    {
+                        var file = new FileInfo(path);
+                        if (file.Exists)
                         {
-                            numMipmaps = 1;
-                            format = PixelFormat.Format16bppArgb1555;
-                            ditherMethod = DitherMethod.None;
+                            Converter.Convert(
+                                new ConversionOptions
+                                {
+                                    Dither = options.Dither,
+                                    ForceMipmaps = options.AlwaysMipmap,
+                                    NumMipmaps = options.NumMipmaps,
+                                    Transparency = options.Transparency
+                                },
+                                new FileInfo(file.BareName() + ".mat"),
+                                file);
                         }
                         else
                         {
-                            bool large = bitmap.Width > 256 || bitmap.Height > 256;
-
-                            // Only generate mipmaps if the image isn't larger than 256 or if LargeMipmaps
-                            // option is enabled.
-                            //
-                            // Add 1 because mipmaps includes original image
-                            numMipmaps = !large || options.AlwaysMipmap ? options.NumMipmaps + 1 : 1;
-                            format = PixelFormat.Format16bppRgb565;
-                            ditherMethod = options.Dither ? DitherMethod.Burkes : DitherMethod.None;
-                        }
-
-                        using (Bitmap dithered = Filters.Dither(bitmap, format, ditherMethod))
-                        {
-                            byte[] result = Converter.ToMat16(dithered, format, numMipmaps);
-
-                            string outputPath = Path.Combine(inputFile.DirectoryName, String.Format("{0}.mat", inputFile.BareName()));
-                            File.WriteAllBytes(outputPath, result);
+                            Console.WriteLine("File not found: " + file.FullName);
                         }
                     }
                 }
                 catch (Exception e)
                 {
-                    Console.Error.WriteLine(e.Message);
+                    Console.WriteLine(e);
                 }
-            }
+            });
         }
     }
 }

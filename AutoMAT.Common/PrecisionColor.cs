@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Drawing;
 
-namespace AutoMAT
+namespace AutoMAT.Common
 {
-	public struct PrecisionColor
+	struct PrecisionColor
 	{
 		public double R { get; set; }
 		public double G { get; set; }

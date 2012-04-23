@@ -3,9 +3,9 @@ using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Drawing.Imaging;
 
-namespace AutoMAT
+namespace AutoMAT.Common
 {
-	public class PrecisionBitmap
+	class PrecisionBitmap
 	{
 		private double[] rgbValues;
 		public int Width { get; private set; }
