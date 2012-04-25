@@ -8,14 +8,14 @@ namespace AutoMAT.Pipeline
 
         FileNotificationQueue queue;
 
-        PipelineMapping mapping;
+        public PipelineMapping Mapping { get; private set; }
 
         public PipelineMonitor(FileNotificationQueue queue, PipelineMapping mapping)
         {
             this.queue = queue;
-            this.mapping = mapping;
+            this.Mapping = mapping;
 
-            watcher = new FileSystemWatcher(mapping.InputDirectory.FullName);
+            watcher = new FileSystemWatcher(mapping.InputDirectory);
             watcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.Size | NotifyFilters.FileName | NotifyFilters.DirectoryName;
             watcher.Changed += new FileSystemEventHandler(CreatedOrChanged);
             watcher.Renamed += new RenamedEventHandler(Renamed);
@@ -36,7 +36,7 @@ namespace AutoMAT.Pipeline
         {
             if (IsAcceptedChange(e.Name))
             {
-                queue.Enqueue(new FileChangeEvent { FullPath = e.FullPath, ChangeType = FileChangeType.CreatedOrUpdated, Source = mapping });
+                queue.Enqueue(new FileChangeEvent { FullPath = e.FullPath, ChangeType = FileChangeType.CreatedOrUpdated, Source = Mapping });
             }
         }
 
@@ -44,7 +44,7 @@ namespace AutoMAT.Pipeline
         {
             if (IsAcceptedChange(e.Name))
             {
-                queue.Enqueue(new FileChangeEvent { FullPath = e.FullPath, OldFullPath = e.OldFullPath, ChangeType = FileChangeType.Renamed, Source = mapping });
+                queue.Enqueue(new FileChangeEvent { FullPath = e.FullPath, OldFullPath = e.OldFullPath, ChangeType = FileChangeType.Renamed, Source = Mapping });
             }
         }
 
