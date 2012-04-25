@@ -1,15 +1,16 @@
-﻿using System.ComponentModel;
-using System.IO;
+﻿using System;
+using System.ComponentModel;
 using AutoMAT.Common;
 
 namespace AutoMAT.Pipeline
 {
-    public class PipelineMapping : INotifyPropertyChanged
+    public class PipelineMapping : INotifyPropertyChanged, IEquatable<PipelineMapping>
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        DirectoryInfo inputDirectory;
-        public DirectoryInfo InputDirectory
+        string inputDirectory;
+
+        public string InputDirectory
         {
             get { return inputDirectory; }
             set
@@ -22,11 +23,9 @@ namespace AutoMAT.Pipeline
             }
         }
 
-        public string In { get; set; }
-        public string Out { get; set; }
+        string outputDirectory;
 
-        DirectoryInfo outputDirectory;
-        public DirectoryInfo OutputDirectory
+        public string OutputDirectory
         {
             get { return outputDirectory; }
             set
@@ -40,6 +39,7 @@ namespace AutoMAT.Pipeline
         }
 
         ConversionOptions options;
+
         public ConversionOptions Options
         {
             get { return options; }
@@ -56,6 +56,52 @@ namespace AutoMAT.Pipeline
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (object.ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            var other = obj as PipelineMapping;
+            if (other == null)
+            {
+                return false;
+            }
+            return Equals(other);
+        }
+
+        public bool Equals(PipelineMapping other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+            return outputDirectory == other.outputDirectory && inputDirectory == other.inputDirectory;
+        }
+
+        public override int GetHashCode()
+        {
+            return (inputDirectory + outputDirectory).GetHashCode();
+        }
+
+        public static bool operator ==(PipelineMapping x, PipelineMapping y)
+        {
+            if (object.ReferenceEquals(x, y))
+            {
+                return true;
+            }
+            if (x == null || y == null)
+            {
+                return false;
+            }
+            return x.Equals(y);
+        }
+
+        public static bool operator !=(PipelineMapping x, PipelineMapping y)
+        {
+            return !(x == y);
         }
     }
 }

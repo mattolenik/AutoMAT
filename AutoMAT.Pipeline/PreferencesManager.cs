@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace AutoMAT.Pipeline
 {
@@ -28,7 +29,6 @@ namespace AutoMAT.Pipeline
                 }
                 catch(Exception e)
                 {
-                    preferencesFile.Delete();
                     Current = new Preferences();
                     Logger.WriteLine("An exception occurred while trying to read preferences from file {0}:", preferencesFile);
                     Logger.WriteLine(e);
@@ -43,6 +43,7 @@ namespace AutoMAT.Pipeline
         
         public static void Save()
         {
+            Directory.CreateDirectory(AppData.ApplicationPath);
             var preferencesFile = new FileInfo(Path.Combine(AppData.ApplicationPath, FileName));
             try
             {

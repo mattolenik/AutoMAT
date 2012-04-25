@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System;
+using System.Linq;
 using System.IO;
 using System.Threading.Tasks;
 using AutoMAT.Common;
@@ -40,11 +41,31 @@ namespace AutoMAT.Pipeline
             queue.Clear();
         }
 
-        public void AddAndStart(PipelineMapping mapping)
+        public void AddAndStart(params PipelineMapping[] mappings)
         {
-            var monitor = new PipelineMonitor(queue, mapping);
-            monitors.Add(monitor);
-            monitor.Start();
+            foreach (var mapping in mappings)
+            {
+                var monitor = new PipelineMonitor(queue, mapping);
+                monitors.Add(monitor);
+                monitor.Start();
+            }
+        }
+        
+        public void RemoveAndStop(PipelineMapping mapping)
+        {
+            var monitor = monitors.Where(m => m.Mapping == mapping).SingleOrDefault();
+            if (monitor == null)
+            {
+                throw new InvalidOperationException("Monitor with mapping not found");
+            }
+            monitor.Stop();
+            monitors.Remove(monitor);
+        }
+
+        public void Reset()
+        {
+            Stop();
+            monitors.Clear();
         }
 
         void DoConversions()
@@ -72,19 +93,25 @@ namespace AutoMAT.Pipeline
             }
         }
 
-        Task UpdateMatAsync(string path, DirectoryInfo outputDirectory, ConversionOptions options)
+        Task UpdateMatAsync(string path, string outputDirectory, ConversionOptions options)
         {
             var inputFile = new FileInfo(path);
-            var outputFile = new FileInfo(Path.Combine(outputDirectory.FullName, inputFile.BareName() + ".mat"));
-            return Converter.ConvertAsync(options, outputFile, inputFile);
+            var outputFile = new FileInfo(Path.Combine(outputDirectory, inputFile.BareName() + ".mat"));
+            if (inputFile.Exists)
+            {
+                Directory.CreateDirectory(outputDirectory);
+                return Converter.ConvertAsync(options, outputFile, inputFile);
+            }
+            return null;
         }
 
-        void RenameMat(FileInfo oldSource, FileInfo newSource, DirectoryInfo outputDirectory)
+        void RenameMat(FileInfo oldSource, FileInfo newSource, string outputDirectory)
         {
-            var oldTarget = new FileInfo(Path.Combine(outputDirectory.FullName, oldSource.BareName() + ".mat"));
+            var oldTarget = new FileInfo(Path.Combine(outputDirectory, oldSource.BareName() + ".mat"));
             if (oldTarget.Exists)
             {
-                oldTarget.MoveTo(Path.Combine(outputDirectory.FullName, newSource.BareName() + ".mat"));
+                Directory.CreateDirectory(outputDirectory);
+                oldTarget.MoveTo(Path.Combine(outputDirectory, newSource.BareName() + ".mat"));
             }
         }
     }

@@ -13,6 +13,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
 using AutoMAT.Common;
+using System.Collections.Specialized;
+using System.ComponentModel;
 
 namespace AutoMAT.Pipeline
 {
@@ -21,19 +23,42 @@ namespace AutoMAT.Pipeline
     /// </summary>
     public partial class MainWindow : Window
     {
+        Pipeline pipeline;
+
         public MainWindow()
         {
             PreferencesManager.Load();
             InitializeComponent();
-            var pipeline = new Pipeline();
+            pipeline = new Pipeline();
             pipeline.Start();
             pipeline.AddAndStart(
                 new PipelineMapping
                 {
-                    InputDirectory = new DirectoryInfo(@"C:\Users\Matt\Desktop\MAT\input"),
-                    OutputDirectory = new DirectoryInfo(@"C:\Users\Matt\Desktop\MAT"),
+                    InputDirectory = @"C:\Users\Matt\Desktop\MAT\input",
+                    OutputDirectory = @"C:\Users\Matt\Desktop\MAT",
                     Options = ConversionOptions.Default
                 });
+            mappingList.ItemsSource = PreferencesManager.Current.Mappings;
+        }
+
+        void Save_Click(object sender, RoutedEventArgs e)
+        {
+            PreferencesManager.Save();
+            pipeline.Reset();
+            pipeline.AddAndStart(PreferencesManager.Current.Mappings.ToArray());
+        }
+
+        void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+            PreferencesManager.Current.Mappings.Add(new PipelineMapping { Options = ConversionOptions.Default });
+        }
+
+        void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var selected in mappingList.SelectedItems.OfType<PipelineMapping>().ToList())
+            {
+                PreferencesManager.Current.Mappings.Remove(selected);
+            }
         }
     }
 }

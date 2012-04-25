@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Collections.ObjectModel;
+﻿using System.ComponentModel;
 
 namespace AutoMAT.Pipeline
 {
     public class Preferences
     {
-        public ObservableCollection<PipelineMapping> Mappings { get; set; }
+        public BindingList<PipelineMapping> Mappings { get; set; }
+
+        public Preferences()
+        {
+            Mappings = new BindingList<PipelineMapping>();
+        }
     }
 }
