@@ -94,20 +94,22 @@ namespace AutoMAT.Common
             {
                 Magic = new byte[] { (byte)'M', (byte)'A', (byte)'T', (byte)' ' },
                 Version = 0x32,
-                Type = 2,
-                MatRecordCount = sources.Length,
-                TextureCount = sources.Length,
-                Transparency = isAlpha ? 1 : 0,
+                Type = MatHeader.MatType.Texture,
+                MatRecordCount = (uint)sources.Length,
+                TextureCount = (uint)sources.Length,
+                // This always appears to be 1 in Infernal Machine MATs and isn't a good way
+                // to determine transparency. Actual value is probably something else.
+                Transparency = 1,
                 Bitdepth = 16,
                 BlueBits = 5,
-                GreenBits = isAlpha ? 5 : 6,
+                GreenBits = (uint)(isAlpha ? 5 : 6),
                 RedBits = 5,
-                RedShl = 0,
-                GreenShl = 0,
+                RedShl = (uint)(isAlpha ? 10 : 11),
+                GreenShl = 5,
                 BlueShl = 0,
-                RedShr = 0,
-                GreenShr = 0,
-                BlueShr = 0
+                RedShr = 3,
+                GreenShr = 2,
+                BlueShr = 3
             };
 
             using (var stream = new MemoryStream())
@@ -119,10 +121,14 @@ namespace AutoMAT.Common
                 {
                     var recordHeader = new MatRecordHeader
                     {
-                        RecordType = 0x8,
+                        Type = MatRecordHeader.RecordType.Texture,
+                        // Values taken from Infernal Machine MATs. They vary across different MATs
+                        // used in the game. Probably irrelevant for JK. Some MATs, like those for fonts,
+                        // have different values. Perhaps metadata used by LEC for their tools?
                         Unknown4 = 1065353216,
                         Unknown6 = 4,
-                        Unknown7 = 4
+                        Unknown7 = 4,
+                        Unknown8 = 4
                     };
                     // MAT record header
                     stream.WriteBytes(RawSerializer.Serialize(recordHeader));
@@ -132,9 +138,10 @@ namespace AutoMAT.Common
                 {
                     var dataHeader = new TextureDataHeader
                     {
-                        SizeX = source.Width,
-                        SizeY = source.Height,
-                        MipmapCount = numMipmaps
+                        SizeX = (uint)source.Width,
+                        SizeY = (uint)source.Height,
+                        MipmapCount = (uint)numMipmaps,
+                        TransparentBool = (uint)(isAlpha ? 1 : 0)
                     };
 
                     // Texture data header

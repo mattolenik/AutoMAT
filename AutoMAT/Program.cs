@@ -15,7 +15,7 @@ namespace AutoMAT
         private static void Main(string[] args)
         {
             var options = new Options();
-            var parser = new CommandLineParser(new CommandLineParserSettings(Console.Error));
+            var parser = new CommandLineParser(new CommandLineParserSettings(Console.Out));
             if (!parser.ParseArguments(args, options))
             {
                 Environment.Exit(1);

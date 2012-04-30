@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace AutoMAT.Common
 {
-	static class RawSerializer
+	public static class RawSerializer
 	{
 		public static T Deserialize<T>(Stream stream)
 		{

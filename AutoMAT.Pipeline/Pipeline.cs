@@ -45,9 +45,12 @@ namespace AutoMAT.Pipeline
         {
             foreach (var mapping in mappings)
             {
-                var monitor = new PipelineMonitor(queue, mapping);
-                monitors.Add(monitor);
-                monitor.Start();
+                if (Directory.Exists(mapping.InputDirectory) && Directory.Exists(mapping.OutputDirectory))
+                {
+                    var monitor = new PipelineMonitor(queue, mapping);
+                    monitors.Add(monitor);
+                    monitor.Start();
+                }
             }
         }
         
