@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoMAT.Common", "AutoMAT.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoMAT.Pipeline", "AutoMAT.Pipeline\AutoMAT.Pipeline.csproj", "{A4800BB5-EE7B-4D32-A1A4-AF36C8FE0D44}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoMAT.DumpHeaders", "AutoMAT.DumpHeaders\AutoMAT.DumpHeaders.csproj", "{C353B42A-6D12-4A21-A536-1C8C587121C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -16,13 +18,19 @@ Global
 		{8A052EDA-731D-412B-AB5A-B8B87B29777A}.Debug|x86.ActiveCfg = Debug|x86
 		{8A052EDA-731D-412B-AB5A-B8B87B29777A}.Debug|x86.Build.0 = Debug|x86
 		{8A052EDA-731D-412B-AB5A-B8B87B29777A}.Release|x86.ActiveCfg = Release|x86
+		{8A052EDA-731D-412B-AB5A-B8B87B29777A}.Release|x86.Build.0 = Release|x86
 		{CC410262-BE8A-4983-80FF-C82DB3A7C249}.Debug|x86.ActiveCfg = Debug|x86
 		{CC410262-BE8A-4983-80FF-C82DB3A7C249}.Debug|x86.Build.0 = Debug|x86
 		{CC410262-BE8A-4983-80FF-C82DB3A7C249}.Release|x86.ActiveCfg = Release|x86
+		{CC410262-BE8A-4983-80FF-C82DB3A7C249}.Release|x86.Build.0 = Release|x86
 		{A4800BB5-EE7B-4D32-A1A4-AF36C8FE0D44}.Debug|x86.ActiveCfg = Debug|x86
 		{A4800BB5-EE7B-4D32-A1A4-AF36C8FE0D44}.Debug|x86.Build.0 = Debug|x86
 		{A4800BB5-EE7B-4D32-A1A4-AF36C8FE0D44}.Release|x86.ActiveCfg = Release|x86
 		{A4800BB5-EE7B-4D32-A1A4-AF36C8FE0D44}.Release|x86.Build.0 = Release|x86
+		{C353B42A-6D12-4A21-A536-1C8C587121C6}.Debug|x86.ActiveCfg = Debug|x86
+		{C353B42A-6D12-4A21-A536-1C8C587121C6}.Debug|x86.Build.0 = Debug|x86
+		{C353B42A-6D12-4A21-A536-1C8C587121C6}.Release|x86.ActiveCfg = Release|x86
+		{C353B42A-6D12-4A21-A536-1C8C587121C6}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
