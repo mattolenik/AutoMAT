@@ -4,7 +4,7 @@ using AutoMAT.Common;
 
 namespace AutoMAT.Pipeline
 {
-    public class PipelineMapping : INotifyPropertyChanged, IEquatable<PipelineMapping>
+    public class PipelineMapping : INotifyPropertyChanged, IEquatable<PipelineMapping>, ICloneable
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -92,7 +92,7 @@ namespace AutoMAT.Pipeline
             {
                 return true;
             }
-            if (x == null || y == null)
+            if (object.ReferenceEquals(x, null) || object.ReferenceEquals(y, null))
             {
                 return false;
             }
@@ -102,6 +102,16 @@ namespace AutoMAT.Pipeline
         public static bool operator !=(PipelineMapping x, PipelineMapping y)
         {
             return !(x == y);
+        }
+
+        public object Clone()
+        {
+            return new PipelineMapping
+            {
+                InputDirectory = this.InputDirectory,
+                OutputDirectory = this.OutputDirectory,
+                Options = this.Options.Clone() as ConversionOptions
+            };
         }
     }
 }

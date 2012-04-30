@@ -14,6 +14,8 @@ namespace AutoMAT.Pipeline
 
         public static Preferences Current { get; set; }
 
+        static Preferences snapshot;
+
         public PreferencesManager()
         {
         }
@@ -39,10 +41,13 @@ namespace AutoMAT.Pipeline
             {
                 Current = new Preferences();
             }
+            snapshot = Current.Clone() as Preferences;
         }
         
         public static void Save()
         {
+            snapshot = Current.Clone() as Preferences;
+
             Directory.CreateDirectory(AppData.ApplicationPath);
             var preferencesFile = new FileInfo(Path.Combine(AppData.ApplicationPath, FileName));
             try
@@ -57,6 +62,25 @@ namespace AutoMAT.Pipeline
                 Logger.WriteLine(e);
                 Logger.WriteLine();
             }
+        }
+
+        public static Task SaveAsync()
+        {
+            return Task.Factory.StartNew(
+                () =>
+                {
+                    Save();
+                });
+        }
+
+        public static void RevertToSnapshot()
+        {
+            Current.Mappings.Clear();
+            foreach (var mapping in snapshot.Mappings)
+            {
+                Current.Mappings.Add(mapping.Clone() as PipelineMapping);
+            }
+            Current.EnableSync = snapshot.EnableSync;
         }
     }
 }

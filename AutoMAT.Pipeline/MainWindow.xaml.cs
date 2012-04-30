@@ -23,42 +23,14 @@ namespace AutoMAT.Pipeline
     /// </summary>
     public partial class MainWindow : Window
     {
-        Pipeline pipeline;
-
         public MainWindow()
         {
             PreferencesManager.Load();
             InitializeComponent();
-            pipeline = new Pipeline();
-            pipeline.Start();
-            pipeline.AddAndStart(
-                new PipelineMapping
-                {
-                    InputDirectory = @"C:\Users\Matt\Desktop\MAT\input",
-                    OutputDirectory = @"C:\Users\Matt\Desktop\MAT",
-                    Options = ConversionOptions.Default
-                });
             mappingList.ItemsSource = PreferencesManager.Current.Mappings;
-        }
-
-        void Save_Click(object sender, RoutedEventArgs e)
-        {
-            PreferencesManager.Save();
-            pipeline.Reset();
-            pipeline.AddAndStart(PreferencesManager.Current.Mappings.ToArray());
-        }
-
-        void AddButton_Click(object sender, RoutedEventArgs e)
-        {
-            PreferencesManager.Current.Mappings.Add(new PipelineMapping { Options = ConversionOptions.Default });
-        }
-
-        void DeleteButton_Click(object sender, RoutedEventArgs e)
-        {
-            foreach (var selected in mappingList.SelectedItems.OfType<PipelineMapping>().ToList())
-            {
-                PreferencesManager.Current.Mappings.Remove(selected);
-            }
+            PipelineManager.Current = new Pipeline();
+            PipelineManager.Current.Start();
+            PipelineManager.Current.AddAndStart(PreferencesManager.Current.Mappings.ToArray());
         }
     }
 }

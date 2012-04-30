@@ -42,6 +42,7 @@
     <Reference Include="PresentationFramework.Aero" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -53,12 +54,20 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WPFToolkit.Extended">
+      <HintPath>..\lib\WPFToolkit.Extended.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddMappingCommand.cs" />
+    <Compile Include="DeleteMappingCommand.cs" />
+    <Compile Include="PipelineManager.cs" />
+    <Compile Include="RevertCommand.cs" />
+    <Compile Include="SaveCommand.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -68,7 +77,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AppData.cs" />
-    <Compile Include="Dictionary.cs" />
+    <Compile Include="Commands.cs" />
+    <Compile Include="DirectoryBrowseCommand.cs" />
     <Compile Include="FileChangeEvent.cs" />
     <Compile Include="FileChangeType.cs" />
     <Compile Include="FileNotificationQueue.cs" />

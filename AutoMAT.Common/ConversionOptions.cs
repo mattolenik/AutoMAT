@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel;
+using System;
 
 namespace AutoMAT.Common
 {
-    public class ConversionOptions : INotifyPropertyChanged
+    public class ConversionOptions : INotifyPropertyChanged, ICloneable
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -82,6 +83,17 @@ namespace AutoMAT.Common
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
+        }
+
+        public object Clone()
+        {
+            return new ConversionOptions
+            {
+                Dither = this.Dither,
+                ForceMipmaps = this.ForceMipmaps,
+                NumMipmaps = this.NumMipmaps,
+                Transparency = this.Transparency
+            };
         }
     }
 }
